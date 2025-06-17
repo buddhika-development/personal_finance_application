@@ -1,7 +1,9 @@
 import streamlit as st
 from functions._add_new_transaction import add_new_income_transaction_, add_new_expense_transaction
+from utils._database_connection import database_connection
 
 st.title("Add new Transaction")
+database_connection()
 
 with st.container():
 

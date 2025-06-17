@@ -1,8 +1,10 @@
 import streamlit as st
 from functions._add_new_transaction import add_new_income_transaction_, add_new_expense_transaction
+from utils._database_connection import databse_connection
 
 st.title("Add new Transaction")
 
+databse_connection()
 with st.container():
 
     transaction_amount_input, transaction_type_input = st.columns([2,1])

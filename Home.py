@@ -4,7 +4,7 @@ from utils._database_connection import databse_connection
 
 st.title("Add new Transaction")
 
-databse_connection()
+conn = databse_connection()
 with st.container():
 
     transaction_amount_input, transaction_type_input = st.columns([2,1])
@@ -21,7 +21,7 @@ with st.container():
         income_add = st.button("Add new Income")
 
         if income_add:
-            add_new_income_transaction_()
+            add_new_income_transaction_(True, transaction_amount, income_resource, income_note)
     
     if transaction_type.lower() == "expense":
 

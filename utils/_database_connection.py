@@ -3,6 +3,7 @@ import logging
 import os
 from dotenv import load_dotenv
 from psycopg2.extensions import connection
+from utils._database_management import _table_creation_process
 
 load_dotenv()
 
@@ -20,8 +21,6 @@ def databse_connection() -> connection | None:
 
     try:
 
-        print(os.getenv("db_password"))
-
         conn = psycopg2.connect(
             host= os.getenv("db_host"),
             port = os.getenv("db_port"),
@@ -29,9 +28,12 @@ def databse_connection() -> connection | None:
             user = os.getenv("db_user"),
             password = os.getenv("db_password")
         )
+        
+        _table_creation_process(conn)
 
         logger.info("Database connection succesfully extablished..")
-        
+        return conn
+    
     except Exception as e:
         logger.error(f"Something went wrong in database conneciton process... {e}")
         return None

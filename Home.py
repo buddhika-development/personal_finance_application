@@ -36,4 +36,4 @@ with st.container():
         expense_add = st.button("Add new Expense")
 
         if expense_add:
-            add_new_expense_transaction()
+            add_new_expense_transaction(False, transaction_amount, expense_tag, expense_reason, expense_additional_note)

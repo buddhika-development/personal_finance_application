@@ -16,7 +16,6 @@ def user_income_analyze() -> pd.DataFrame:
     """
     
     income = get_all_income_details(conn)
-    expense = get_all_expense_details(conn)
     income_dataframe = pd.DataFrame(income, columns=["Transaction Date", "Transaction Amount", "Expense Reason", "Additional notes"])
     income_dataframe["Transaction Date"] = pd.to_datetime(income_dataframe["Transaction Date"]).dt.to_period('M')
 

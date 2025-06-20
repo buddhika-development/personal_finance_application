@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 from utils._database_connection import databse_connection
 from utils._database_actions import get_all_income_details
+from data_actions.income_data_analyzing import user_income_analyze, get_current_month_income
 
 conn = databse_connection()
 income_details = get_all_income_details(conn)
@@ -15,27 +16,24 @@ income_dataframe_details = income_dataframe_details.reset_index(drop= True)
 # generate mean value of the monthly income
 monthly_mean_income = income_dataframe_details["Transaction Amount"].mean()
 
-# generaete month income
-selected_columns = ["Transaction Date", "Transaction Amount"]
-_income = income_dataframe_details[selected_columns]
-_income["Transaction Date"] = pd.to_datetime(_income["Transaction Date"]).dt.to_period('M')
-
-monthly_income = _income.groupby('Transaction Date')['Transaction Amount'].sum().reset_index()
-
-# Rename columns for clarity
-monthly_income.columns = ['Transaction Date', 'Total Income']
-monthly_income.sort_values(by= "Transaction Date", ascending= False)
-
-print(monthly_income)
-
+monthly_income_details = user_income_analyze()
+current_month_income = get_current_month_income()
 st.title("Income Details")
 
-with st.container( border= True):
-    st.text("Average Monthly Income")
-    st.subheader(f"rs.{monthly_mean_income:.2f}")
+total_income_ui ,average_income_ui = st.columns(2)
+
+with total_income_ui:
+    with st.container(border= True):
+        st.text("Monthly Income")
+        st.subheader(f"rs.{current_month_income:.2f}")
+
+with average_income_ui:
+    with st.container( border= True):
+        st.text("Average Monthly Income")
+        st.subheader(f"rs.{monthly_mean_income:.2f}")
 
 
 st.dataframe(income_dataframe_details)
 
-st.title("Monthly Income")
-st.dataframe(monthly_income)
+st.title("Monthly Income Details")
+st.dataframe(monthly_income_details)
